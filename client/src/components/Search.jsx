@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { FaSearch } from "react-icons/fa";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { TypeAnimation } from 'react-type-animation';
+import { IoMdArrowRoundBack } from "react-icons/io";
+import useMobile from '../hooks/useMobile';
 
 const Search = () => {
 
     const navigate = useNavigate()
     const location = useLocation()
     const [isSearchPage,setSearchPage] = useState(false)
+    const [isMobile] = useMobile()
+
 
     useEffect(()=>{
         const isSearch = location.pathname === "/search" ;
@@ -21,16 +25,28 @@ const Search = () => {
     }
 
   return (
-    <div className='w-full min-w-[300px] lg:min-w-[420px] h-12 rounded-lg border overflow-hidden flex items-center text-neutral-500 bg-slate-50'>
-        <button className='flex justify-center items-center h-full p-3'>  
-            <FaSearch size={22} />
-        </button>
-
+    <div className='w-full min-w-[300px] lg:min-w-[420px] h-11 lg:h-12 rounded-lg border overflow-hidden flex items-center text-neutral-500 bg-slate-50 group focus-within:border-primary-200'>
+        <div>           
+            {
+                (isMobile && isSearchPage)?
+                (
+                <Link to={"/"} className='flex justify-center items-center h-full p-1 m-1 group-focus-within:text-primary-200 bg-white rounded-full shadow-md'>
+                    <IoMdArrowRoundBack size={22}/>
+                </Link>
+                )
+                :
+                (
+                <button className='flex justify-center items-center h-full p-3 group-focus-within:text-primary-200'>  
+                    <FaSearch size={22} />
+                </button>
+                )
+            }           
+        </div>
         <div>
             {
                 (!isSearchPage)?(
                     // Not inside the search Page
-                    <div onClick={redirectoSearchPage}>
+                    <div onClick={redirectoSearchPage} className='w-full h-full flex items-center'>
                         <TypeAnimation
                         sequence={[
                             'Search "milk"', 
@@ -63,7 +79,13 @@ const Search = () => {
                 ):(
                      // Inside the search Page 
                     <div>
-                        <input type="text" className='' placeholder='Search for Atta, Dal and more.' />
+                        <input type='text'
+                            placeholder='Search for atta dal and more.'
+                            autoFocus
+                            // defaultValue={searchText}
+                            className='bg-transparent w-full h-full outline-none'
+                            // onChange={handleOnChange} 
+                            />
                     </div>
                 )
             }
