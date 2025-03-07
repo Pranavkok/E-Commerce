@@ -18,7 +18,7 @@ const Header = () => {
   }
 
   return (
-      <header className='h-24 lg:h-20 lg:shadow-md sticky top-0 flex items-center justify-center flex-col gap-1'>
+      <header className='h-24 lg:h-20 lg:shadow-md sticky top-0 flex items-center justify-center flex-col gap-1 bg-white'>
             {
                 !(isMobile && isSearchPage)&&(<div className='container mx-auto items-center flex px-2 justify-between'>
 
