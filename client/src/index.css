@@ -4,5 +4,6 @@
 @tailwind utilities;
 
 body {
-    @apply bg-slate-50 font-['Poppins']
+    @apply bg-slate-50 font-['Poppins'] font-thin not-italic bg-blue-50 text-neutral-700
+
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import logo from '../assets/logo.png'
 import Search from './Search'
 import { Link, useLocation } from 'react-router-dom'
@@ -6,15 +6,26 @@ import { FaRegUserCircle } from "react-icons/fa";
 import useMobile from '../hooks/useMobile';
 import { FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { GoTriangleDown ,GoTriangleUp} from "react-icons/go";
+import UserMenu from './userMenu';
 
 const Header = () => {
   const [isMobile] = useMobile()
   const location = useLocation()
   const isSearchPage = location.pathname === '/search'
   const navigate = useNavigate()
+  const user = useSelector((state)=>state?.user)
+  const [openUserMenu,setOpenUserMenu] = useState(false)
+
+  console.log('user :',user)
 
   const redirectToLogin = ()=>{
       navigate("/login")
+  }
+
+  const handleCloseMenu = ()=>{
+    setOpenUserMenu(false)
   }
 
   return (
@@ -43,7 +54,35 @@ const Header = () => {
                   </button>
                   {/* for the Desktop */}
                   <div className='hidden lg:flex items-center gap-10'>
-                    <div onClick={redirectToLogin} className='text-lg px-2'>Login</div>
+                    {
+                      user?._id ? (
+                        <div className='relative '>
+                          <div onClick={()=>setOpenUserMenu(prev=>!prev)} className='select-none flex items-center gap-1 cursor-pointer'>
+                            <p>Account</p>
+                            {
+                              openUserMenu ? (
+                                <GoTriangleUp size={25}/>
+                              ):(
+                                <GoTriangleDown size={25}/>
+                              )
+                            }
+                          </div>
+                          <div>
+                            {
+                              openUserMenu 
+                              && 
+                              (<div className='absolute right-0 top-12'>
+                                <div className='bg-white rounded p-4 min-w-52 lg:shadow-lg'>
+                                    <UserMenu close={handleCloseMenu}/>
+                                </div>
+                              </div>)
+                            }
+                          </div>
+                        </div>
+                      ):(
+                        <button onClick={redirectToLogin} className='text-lg px-2'>Login</button>
+                      )
+                    }
                     <button className='flex items-center gap-3 bg-secondary-200 hover:bg-green-700 px-3 py-3 rounded text-white'>
                       {/* add to cart icon */}
                       <div className='animate-bounce'>

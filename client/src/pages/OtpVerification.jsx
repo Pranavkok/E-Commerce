@@ -42,7 +42,12 @@ const OtpVerification = () => {
             if(response.data.success){
                 toast.success(response.data.message)
                 setData(["","","","","",""])
-                // navigate("/verification-otp")
+                navigate("/reset-password",{
+                    state:{
+                        data : response.data,
+                        email : location.state?.email
+                    }
+                })
             }
             // console.log(response.data.message)
         } catch (error) {
