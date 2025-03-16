@@ -7,20 +7,27 @@ import SummaryApi from '../common/SummaryApi'
 import { logout } from '../store/userSlice'
 import toast from 'react-hot-toast'
 import AxiosToastError from '../utils/AxiosToastError'
+import { LuExternalLink } from "react-icons/lu";
 
 const UserMenu = ({close}) => {
     const user = useSelector((state)=>state.user)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
     const handleLogout = async()=>{
         try {
             const response = await Axios({
               ...SummaryApi.logout
             })
             if(response.data.success){
-                close()
+                if(close){
+                    close()
+                }
                 dispatch(logout())
                 localStorage.clear()
                 toast.success(response.data.message)
+                // window.history.back()
+                navigate("/")
             }
         } catch (error) {
             AxiosToastError(error)
@@ -29,11 +36,16 @@ const UserMenu = ({close}) => {
   return (
     <div>
         <div className='font-semibold'>My Account</div>
-        <div className='text-sm'>{user.name || user.mobile}</div>
+        <div className='text-sm flex items-center gap-2'>
+            <span className='max-w-52 text-ellipsis line-clamp-1 '>{user.name || user.mobile} </span>
+            <Link to={"/dashboard/profile"}>
+                <LuExternalLink size={15} className='hover:text-primary-200'/>
+            </Link>
+        </div>
         <Divider/>
         <div className=' text-sm grid gap-2 '>
-            <Link to={""} className='px-2 py-1 hover:bg-green-200'>My Order</Link>
-            <Link to={""} className='px-2 py-1 hover:bg-green-200'>Save Address</Link>
+            <Link to={"/dashboard/myorder"} className='px-2 py-1 hover:bg-green-200'>My Order</Link>
+            <Link to={"/dashboard/address"} className='px-2 py-1 hover:bg-green-200'>Save Address</Link>
             <button onClick={handleLogout} className='bg-red-600 px-2 py-1 text-center border-black text-md text-white rounded-md hover:text-black hover:bg-slate-300'>Log Out</button>
             {/* <Link to={""}></Link> */}
         </div>

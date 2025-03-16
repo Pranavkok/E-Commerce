@@ -18,7 +18,7 @@ const Search = () => {
         setSearchPage(isSearch)
     },[location])
 
-    console.log("is serch page ->",isSearchPage)
+    // console.log("is serch page ->",isSearchPage)
 
     const redirectoSearchPage = ()=>{
         navigate("/search")

@@ -18,7 +18,7 @@ const Header = () => {
   const user = useSelector((state)=>state?.user)
   const [openUserMenu,setOpenUserMenu] = useState(false)
 
-  console.log('user :',user)
+  // console.log('user :',user)
 
   const redirectToLogin = ()=>{
       navigate("/login")
@@ -26,6 +26,14 @@ const Header = () => {
 
   const handleCloseMenu = ()=>{
     setOpenUserMenu(false)
+  }
+
+  const handleMobileUser = ()=>{
+    if(!user._id){
+      navigate("/login")
+      return
+    }
+    navigate("/user")
   }
 
   return (
@@ -49,7 +57,7 @@ const Header = () => {
                 {/* login and my cart */}
                 <div>
                   {/* for the mobile */}
-                  <button className='text-neutral-600 lg:hidden'>
+                  <button onClick={handleMobileUser} className='text-neutral-600 lg:hidden'>
                     <FaRegUserCircle size={27} />
                   </button>
                   {/* for the Desktop */}
