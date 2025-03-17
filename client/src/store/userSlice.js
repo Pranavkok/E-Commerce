@@ -35,6 +35,10 @@ const userSlice = createSlice({
             state.role = action.payload?.role
             // state.createdAt = action.payload.createdAt
         },
+        updateAvatar : (state,action)=>{
+            console.log('Updating avatar in Redux:', action.payload)
+            state.avatar = action.payload
+        },
         logout : (state,action)=>{
             state._id = ""
             state.name = ""
@@ -52,6 +56,6 @@ const userSlice = createSlice({
     }
 })
 
-export const { setUserDetail ,logout} = userSlice.actions
+export const { setUserDetail ,logout , updateAvatar } = userSlice.actions
 
 export default userSlice.reducer

@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { FaUserCircle } from "react-icons/fa";
+import UserProfileAvatarEdit from '../components/UserProfileAvatarEdit';
 
 const Profile = () => {
     const user = useSelector(state => state.user)
+    const [openProfileAvatarEdit,setProfileAvatarEdit] = useState(false)
     console.log(user)
   return (
     <div>
@@ -16,7 +18,13 @@ const Profile = () => {
           )
         }
       </div>
-      <button className='text-sm min-w-20 border-primary-100 hover:bg-primary-200 border px-3 py-1 rounded-full mt-3'>Edit </button>
+      <button onClick={()=>setProfileAvatarEdit(true)} className='text-sm min-w-20 border-primary-100 hover:bg-primary-200 border px-3 py-1 rounded-full mt-3'>Edit </button>
+      {
+        openProfileAvatarEdit && (
+          <UserProfileAvatarEdit close={()=>setProfileAvatarEdit(false)}/>
+
+        )
+      }
     </div>
   )
 }
