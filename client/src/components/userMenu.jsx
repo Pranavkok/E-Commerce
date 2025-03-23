@@ -33,19 +33,26 @@ const UserMenu = ({close}) => {
             AxiosToastError(error)
         }
     }
+
+    const handleClose = ()=>{
+        if(close){
+            close()
+        }
+    }
+
   return (
     <div>
         <div className='font-semibold'>My Account</div>
         <div className='text-sm flex items-center gap-2'>
             <span className='max-w-52 text-ellipsis line-clamp-1 '>{user.name || user.mobile} </span>
-            <Link to={"/dashboard/profile"}>
+            <Link onClick={handleClose} to={"/dashboard/profile"}>
                 <LuExternalLink size={15} className='hover:text-primary-200'/>
             </Link>
         </div>
         <Divider/>
         <div className=' text-sm grid gap-2 '>
-            <Link to={"/dashboard/myorder"} className='px-2 py-1 hover:bg-green-200'>My Order</Link>
-            <Link to={"/dashboard/address"} className='px-2 py-1 hover:bg-green-200'>Save Address</Link>
+            <Link onClick={handleClose}  to={"/dashboard/myorder"} className='px-2 py-1 hover:bg-green-200'>My Order</Link>
+            <Link onClick={handleClose}  to={"/dashboard/address"} className='px-2 py-1 hover:bg-green-200'>Save Address</Link>
             <button onClick={handleLogout} className='bg-red-600 px-2 py-1 text-center border-black text-md text-white rounded-md hover:text-black hover:bg-slate-300'>Log Out</button>
             {/* <Link to={""}></Link> */}
         </div>
