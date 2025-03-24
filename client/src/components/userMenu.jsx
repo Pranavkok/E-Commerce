@@ -41,7 +41,7 @@ const UserMenu = ({close}) => {
     }
 
   return (
-    <div>
+    <div >
         <div className='font-semibold'>My Account</div>
         <div className='text-sm flex items-center gap-2'>
             <span className='max-w-52 text-ellipsis line-clamp-1 '>{user.name || user.mobile} </span>
@@ -51,6 +51,10 @@ const UserMenu = ({close}) => {
         </div>
         <Divider/>
         <div className=' text-sm grid gap-2 '>
+            <Link onClick={handleClose}  to={"/dashboard/category"} className='px-2 py-1 hover:bg-green-200'>Category</Link>
+            <Link onClick={handleClose}  to={"/dashboard/sub-category"} className='px-2 py-1 hover:bg-green-200'>Sub Category</Link>
+            <Link onClick={handleClose}  to={"/dashboard/upload-product"} className='px-2 py-1 hover:bg-green-200'>Upload Product</Link>
+            <Link onClick={handleClose}  to={"/dashboard/product"} className='px-2 py-1 hover:bg-green-200'>Products</Link>
             <Link onClick={handleClose}  to={"/dashboard/myorder"} className='px-2 py-1 hover:bg-green-200'>My Order</Link>
             <Link onClick={handleClose}  to={"/dashboard/address"} className='px-2 py-1 hover:bg-green-200'>Save Address</Link>
             <button onClick={handleLogout} className='bg-red-600 px-2 py-1 text-center border-black text-md text-white rounded-md hover:text-black hover:bg-slate-300'>Log Out</button>

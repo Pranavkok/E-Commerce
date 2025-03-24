@@ -93,7 +93,7 @@ export async function verifyEmailController(req,res){
         return res.status(500).json({
             message : error.message || error ,
             error : true ,
-            success : true 
+            success : false 
         })
     }
 }
