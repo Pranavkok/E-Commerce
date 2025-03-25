@@ -12,7 +12,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Right Part for Content */}
-                <div className='bg-white min-h-[80vh] border-l-2'>
+                <div className='bg-white min-h-[80vh] '>
                     <Outlet></Outlet>
                 </div>
         </div>

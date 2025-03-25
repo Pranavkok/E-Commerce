@@ -41,7 +41,7 @@ const UserMenu = ({close}) => {
     }
 
   return (
-    <div >
+    <div className='border-r-2'>
         <div className='font-semibold'>My Account</div>
         <div className='text-sm flex items-center gap-2'>
             <span className='max-w-52 text-ellipsis line-clamp-1 '>{user.name || user.mobile} </span>
