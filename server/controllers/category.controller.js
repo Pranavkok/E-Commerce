@@ -42,3 +42,47 @@ export async function AddCategoryController(req,res){
         })
     }
 }
+
+export async function GetCategoryController(req,res){
+    try {
+        const data = await CategoryModel.find()
+
+        return res.json({
+            data : data ,
+            error : false ,
+            success : true 
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message : error.message || error ,
+            success : false ,
+            error : true 
+        })
+    }
+}
+
+export async function UpdateCategoryController(req,res){
+    try {
+        const {categoryId,name,image} = req.body
+
+        const update = await CategoryModel.updateOne({
+            _id : categoryId 
+        },{
+            name ,
+            image
+        })
+
+        return res.json({
+            message : "Updated Category",
+            success : true ,
+            error : false ,
+            data : update
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message : error.message || error ,
+            success : false ,
+            error : true 
+        })
+    }
+}

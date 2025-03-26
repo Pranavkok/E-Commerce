@@ -6,7 +6,7 @@ import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
 import toast from 'react-hot-toast'
 
-const UploadCategory = ({close}) => {
+const UploadCategory = ({close,fetchData}) => {
     const[data,setData] = useState({
         name : "",
         image : ""
@@ -42,6 +42,7 @@ const UploadCategory = ({close}) => {
             toast.error("Unable to upload",error.message)
         }finally{
             setLoading(false)
+            fetchData()
             close()
         }
     }
