@@ -8,6 +8,7 @@ import Axios from '../utils/Axios'
 import SummaryApi from '../common/SummaryApi'
 import toast from 'react-hot-toast'
 import EditCategory from '../components/EditCategory'
+import ConfirmBox from '../components/ConfirmBox'
 
 const CategoryPage = () => {
     const [openUploadCategory,setOpenUploadCategory] = useState(false)
@@ -17,6 +18,10 @@ const CategoryPage = () => {
     const [editData,setEditData] = useState({
         name : "",
         image : ""
+    })
+    const [openConfirmBoxDelete,setOpenConfirmBoxDelete] = useState(false)
+    const [deleteCategory,setDeleteCategory] = useState({
+        _id : ""
     })
 
     const fetchCategory = async ()=>{
@@ -42,6 +47,25 @@ const CategoryPage = () => {
         fetchCategory()
     },[])
 
+    const handleDeleteCategory = async()=>{
+        try {
+            const response = await Axios({
+                ...SummaryApi.deleteCategory ,
+                data : deleteCategory
+            })
+
+            const {data : responseData} = response
+
+            if(responseData.success){
+                toast.success(responseData.message)
+                fetchCategory()
+                setOpenConfirmBoxDelete(false)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
   return (
     <section>
         <div className='p-2 bg-white shadow-md flex justify-between items-center'>
@@ -58,7 +82,7 @@ const CategoryPage = () => {
         {
             categoryData.map((category)=>{
                 return (
-                    <div className='w-32 h-56 object-scale-down overflow-hidden bg-[#edf4ff] rounded shadow-md'>
+                    <div className='w-32 h-56 object-scale-down overflow-hidden bg-[#edf4ff] rounded shadow-md' key={category._id}>
                         <img src={category.image} alt={category.name} className='w-full object-scale-down'/>
                         <div className='items-center h-9 flex gap-2'>
                             <button 
@@ -71,7 +95,13 @@ const CategoryPage = () => {
                             className='flex-1 text-green-800 bg-green-200 hover:bg-green-300 font-medium rounded p-1'>
                                 Edit
                             </button>
-                            <button className='flex-1 text-red-800 bg-red-200 hover:bg-red-300 font-medium rounded p-1'>
+                            <button
+                                onClick={()=>{
+                                    setOpenConfirmBoxDelete(true)
+                                    setDeleteCategory(category)
+                                }
+                                }
+                             className='flex-1 text-red-800 bg-red-200 hover:bg-red-300 font-medium rounded p-1'>
                                 Delete
                             </button>
                         </div>
@@ -96,6 +126,12 @@ const CategoryPage = () => {
         {
             openEdit && (
                 <EditCategory data={editData} fetchData={fetchCategory} close={()=>{setOpenEdit(false)}}/>
+            )
+        }
+
+        {
+            openConfirmBoxDelete && (
+                <ConfirmBox close={()=>setOpenConfirmBoxDelete(false)} cancel={()=>setOpenConfirmBoxDelete(false)} confirm={handleDeleteCategory} />
             )
         }
     </section>

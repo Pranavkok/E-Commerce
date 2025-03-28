@@ -9,6 +9,7 @@ import toast from 'react-hot-toast'
 const EditCategory = ({close,fetchData,data : categoryData}) => {
 
     const[data,setData] = useState({
+        _id : categoryData._id,
         name : categoryData.name,
         image : categoryData.image
     })
@@ -30,7 +31,7 @@ const EditCategory = ({close,fetchData,data : categoryData}) => {
         try {
             setLoading(true)
             const response = await Axios ({
-                ...SummaryApi.addCategory,
+                ...SummaryApi.updateCategory,
                 data : data
             })
 
@@ -54,9 +55,10 @@ const EditCategory = ({close,fetchData,data : categoryData}) => {
         if(!file){
             return
         }
-
+        setLoading(true)
         const response = await uploadImage(file)
-        const {data : ImageResponse} = response 
+        const {data : ImageResponse} = response
+        setLoading(false) 
         setData((prev)=>{
             return {
                 ...prev ,
@@ -68,7 +70,7 @@ const EditCategory = ({close,fetchData,data : categoryData}) => {
     <section className='fixed top-0 left-0 right-0 bottom-0 p-4 bg-neutral-800 bg-opacity-60 flex items-center justify-center'>
         <div className='bg-white max-w-4xl w-full p-4 rounded '>
             <div className='flex items-center justify-between'>
-                <h1 className='font-semibold'>Category</h1>
+                <h1 className='font-semibold'> Update Category</h1>
                 <button onClick={close} className='w-fit block ml-auto'>
                     <IoClose size={25}/>
                 </button>
@@ -101,7 +103,11 @@ const EditCategory = ({close,fetchData,data : categoryData}) => {
                         <label htmlFor="uploadCatgegoryImage">
                             <div className={`
                                 ${!data.name? "bg-gray-400" : "bg-primary-200"} px-4 py-2 rounded  w-fit cursor-pointer
-                                `}>Upload Image
+                                `}>
+                                    {
+                                        loading ? "Loading..." : "Upload Image"
+                                    }
+
                             </div>
                             <input disabled={!data.name} onChange={handleUploadCategory} type="file" id='uploadCatgegoryImage' className='hidden' />
                         </label>
@@ -111,7 +117,7 @@ const EditCategory = ({close,fetchData,data : categoryData}) => {
                 <button className={`
                     ${data.name && data.image  ? "bg-primary-100 hover:bg-primary-200" : "bg-gray-400"}
                     py-2 font-semibold rounded 
-                    `}>Add Category</button>
+                    `}>Update Category</button>
             </form>
         </div>
     </section>
