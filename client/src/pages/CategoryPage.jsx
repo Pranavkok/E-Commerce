@@ -7,11 +7,17 @@ import NoData from '../components/NoData'
 import Axios from '../utils/Axios'
 import SummaryApi from '../common/SummaryApi'
 import toast from 'react-hot-toast'
+import EditCategory from '../components/EditCategory'
 
 const CategoryPage = () => {
     const [openUploadCategory,setOpenUploadCategory] = useState(false)
     const [loading,setLoading] = useState(false)
     const [categoryData,setCategoryData] = useState([])
+    const [openEdit,setOpenEdit] = useState(false)
+    const [editData,setEditData] = useState({
+        name : "",
+        image : ""
+    })
 
     const fetchCategory = async ()=>{
         try {
@@ -55,7 +61,14 @@ const CategoryPage = () => {
                     <div className='w-32 h-56 object-scale-down overflow-hidden bg-[#edf4ff] rounded shadow-md'>
                         <img src={category.image} alt={category.name} className='w-full object-scale-down'/>
                         <div className='items-center h-9 flex gap-2'>
-                            <button className='flex-1 text-green-800 bg-green-200 hover:bg-green-300 font-medium rounded p-1'>
+                            <button 
+                            onClick={
+                                ()=>{
+                                    setOpenEdit(true)
+                                    setEditData(category)
+                                }
+                            } 
+                            className='flex-1 text-green-800 bg-green-200 hover:bg-green-300 font-medium rounded p-1'>
                                 Edit
                             </button>
                             <button className='flex-1 text-red-800 bg-red-200 hover:bg-red-300 font-medium rounded p-1'>
@@ -77,6 +90,12 @@ const CategoryPage = () => {
         {
             openUploadCategory && (
                 <UploadCategory fetchData={fetchCategory} close={()=>setOpenUploadCategory(false)}/>
+            )
+        }
+
+        {
+            openEdit && (
+                <EditCategory data={editData} fetchData={fetchCategory} close={()=>{setOpenEdit(false)}}/>
             )
         }
     </section>
