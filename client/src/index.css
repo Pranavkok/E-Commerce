@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;...&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    @apply bg-slate-50 font-['Poppins'] font-thin not-italic bg-blue-50 text-neutral-700
+
+}
