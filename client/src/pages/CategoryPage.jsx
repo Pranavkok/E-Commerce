@@ -30,28 +30,28 @@ const CategoryPage = () => {
         setCategoryData(allCategory)
     },[allCategory])
 
-    // const fetchCategory = async ()=>{
-    //     try {
-    //         setLoading(true)
-    //         const response = await Axios ({
-    //             ...SummaryApi.getCategory
-    //         })
-    //         const {data : responseData} = response
-    //         if(responseData.success){
-    //             setCategoryData(responseData.data)
-    //         }
-    //         console.log(responseData)
-    //         // console.log(categoryData)
-    //     } catch (error) {
-    //         toast.error(error.message)
-    //     }finally{
-    //         setLoading(false)
-    //     }
-    // }
+    const fetchCategory = async ()=>{
+        try {
+            setLoading(true)
+            const response = await Axios ({
+                ...SummaryApi.getCategory
+            })
+            const {data : responseData} = response
+            if(responseData.success){
+                setCategoryData(responseData.data)
+            }
+            console.log(responseData)
+            // console.log(categoryData)
+        } catch (error) {
+            toast.error(error.message)
+        }finally{
+            setLoading(false)
+        }
+    }
 
-    // useEffect(()=>{
-    //     fetchCategory()
-    // },[])
+    useEffect(()=>{
+        fetchCategory()
+    },[])
 
     const handleDeleteCategory = async()=>{
         try {
