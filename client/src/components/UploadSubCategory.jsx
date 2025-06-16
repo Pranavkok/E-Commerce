@@ -8,7 +8,7 @@ import Axios from '../utils/Axios';
 import toast from 'react-hot-toast'
 import AxiosToastError from '../utils/AxiosToastError';
 
-const UploadSubCategory = ({close}) => {
+const UploadSubCategory = ({close,fetchData}) => {
     const [subCategoryData,setSubCategoryData] = useState({
         name : "",
         image : "",
@@ -70,6 +70,9 @@ const UploadSubCategory = ({close}) => {
                 toast.success(responseData.message) 
                 if(close){
                     close()
+                }
+                if(fetchData){
+                    fetchData()
                 }
             }
         } catch (error) {

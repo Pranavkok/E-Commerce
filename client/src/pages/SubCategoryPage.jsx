@@ -136,6 +136,7 @@ const SubCategoryPage = () => {
         openAddsubCategory && (
           <UploadSubCategory
           close={()=>setOpenAddSubCategory(false)}
+          fetchData={fetchSubCategory}
             />
         )
       }

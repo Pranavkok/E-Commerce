@@ -1,3 +1,5 @@
+import { getProduct } from "../../../server/controllers/product.controller";
+
 export const baseURL = "http://localhost:8080"
 
 const SummaryApi = {
@@ -76,6 +78,14 @@ const SummaryApi = {
     deleteSubCategory : {
         url : "/api/subcategory/delete",
         method : "delete"
+    },
+    createProduct : {
+        url : "/api/product/add",
+        method : "post"
+    },
+    getProduct : {
+        url : "/api/product/get",
+        method : "post"
     }
 }
 

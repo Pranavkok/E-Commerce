@@ -5,6 +5,11 @@ import Loading from '../components/Loading';
 import ViewImage from '../components/ViewImage';
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { useSelector } from 'react-redux';
+import AddField from '../components/AddField';
+import SummaryApi from '../common/SummaryApi';
+import Axios from '../utils/Axios';
+import toast from 'react-hot-toast'
+import successAlert from '../utils/successAlert.js';
 
 const UploadProduct = () => {
   const [data,setData] = useState({
@@ -25,7 +30,8 @@ const UploadProduct = () => {
   const [selectedCategory,setSelectedCategory] = useState("")
   const [selectedSubCategory,setSelectedSubCategory] = useState("")
   const allSubCategory = useSelector((state)=>state.product.allSubCategory)
-  const [moreField,setMoreField] = useState([])
+  const [openAddField,setOpenAddField] = useState(false)
+  const [fieldName,setFieldName] = useState("")
 
   const handleChange = (e)=>{
     const {name,value} = e.target 
@@ -123,16 +129,71 @@ const UploadProduct = () => {
     }));
   };
 
+  const handleAddField = ()=>{
+    setData((prev)=>{
+      return{
+        ...prev,
+        more_details : {
+          ...prev.more_details,
+          [fieldName]:""
+      }
+      }
+    })
+    setFieldName("")
+    setOpenAddField(false)
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Form submitted with data:", data);
+
+    try {
+      const response = await Axios ({
+        ...SummaryApi.createProduct,
+        data : data 
+      })
+
+      const {data : responseData} = response 
+
+      console.log("Response from server:", responseData);
+
+      if(responseData.success){
+        setData({
+          name: "",
+          image: [],
+          category: [],
+          subCategory: [],
+          unit: "",
+          stock: "",
+          price: "",
+          discount: "",
+          description: "",
+          more_details: {}
+        });
+        setSelectedCategory("");
+        setSelectedSubCategory("");
+        setSelectedImageUrl("");
+        setFieldName("");
+        setOpenAddField(false);
+
+        successAlert("Product Created Successfully");
+      }
+    } catch (error) {
+      toast.error("Failed to upload product");
+      console.error("Error uploading product:", error);
+    }
+  }
+
   return (
     <section>
         <div className='p-2 bg-white shadow-md flex justify-between items-center'>
-            <h2 className='font-semibold'>Upload Product</h2>
+            <h2 className='text-lg font-bold'>Upload Product</h2>
         </div>
 
         <div className='grid p-3'>
-          <form action="">
+          <form action="" onSubmit={handleSubmit}>
             <div className='grid gap-1'>
-              <label htmlFor="name">Name </label>
+              <label className='font-semibold' htmlFor="name">Name </label>
               <input
               id='name'
                name = "name"
@@ -150,7 +211,7 @@ const UploadProduct = () => {
         <div className='grid p-3'>
           <form action="" className='grid gap-2'>
             <div className='grid gap-1'>
-              <label htmlFor="description">Description </label>
+              <label className='font-semibold' htmlFor="description">Description </label>
               <textarea
               id='description'
                name = "description"
@@ -168,10 +229,10 @@ const UploadProduct = () => {
         </div>
 
         <div>
-          <p>Image</p>
+          <p className='font-semibold'>Image</p>
           <div >
             
-            <label htmlFor='productImage' className='bg-neutral-100 h-24 border rounded flex justify-center items-center'>
+            <label  htmlFor='productImage' className='font-semibold bg-neutral-100 h-24 border rounded flex justify-center items-center'>
               <div className='flex flex-col justify-center items-center gap-2 cursor-pointer'>
                 {imageLoading ? <Loading/> : (
                   <>
@@ -211,7 +272,7 @@ const UploadProduct = () => {
         </div>
 
         <div className='grid gap-1'>
-          <label htmlFor="category">Category</label>
+          <label className='font-semibold' htmlFor="category">Category</label>
           <div>
             <select 
               id="category"
@@ -250,7 +311,7 @@ const UploadProduct = () => {
         </div>
 
         <div className='grid gap-1'>
-          <label htmlFor="category">Sub Category</label>
+          <label className='font-semibold' htmlFor="category">Sub Category</label>
           <div>
             <select 
               id="category"
@@ -291,7 +352,7 @@ const UploadProduct = () => {
         <div className='grid p-3'>
           <form action="">
             <div className='grid gap-1'>
-              <label htmlFor="unit">Unit </label>
+              <label className='font-semibold' htmlFor="unit">Unit </label>
               <input
               id='unit'
                name = "unit"
@@ -309,7 +370,7 @@ const UploadProduct = () => {
         <div className='grid p-3'>
           <form action="">
             <div className='grid gap-1'>
-              <label htmlFor="stock">Stock </label>
+              <label className='font-semibold' htmlFor="stock">Stock </label>
               <input
               id='stock'
                name = "stock"
@@ -327,7 +388,7 @@ const UploadProduct = () => {
         <div className='grid p-3'>
           <form action="">
             <div className='grid gap-1'>
-              <label htmlFor="price">Price </label>
+              <label className='font-semibold' htmlFor="price">Price </label>
               <input
               id='price'
                name = "price"
@@ -345,11 +406,11 @@ const UploadProduct = () => {
         <div className='grid p-3'>
           <form action="">
             <div className='grid gap-1'>
-              <label htmlFor="discount">Discount </label>
+              <label className='font-semibold' htmlFor="discount">Discount </label>
               <input
               id='discount'
                name = "discount"
-               type="text" 
+               type="number" 
                placeholder='Enter product discount '
                value = {data.discount}
                onChange={handleChange}
@@ -361,15 +422,75 @@ const UploadProduct = () => {
         </div>
 
         {/* Add More Field  */}
-        <div className=' bg-primary-200 hover:bg-white py-1 px-2 w-32 text-center font-semibold border border-primary-200 rounded hover:text-neutral-900 cursor-pointer'>
+        <div>
+            {
+              Object?.keys(data?.more_details)?.map((key,index)=>{
+                return (
+                  <div key={key+index} className='grid p-3'>
+                    <form action="">
+                      <div className='grid gap-1'>
+                        <label className='font-semibold' htmlFor={key}>{key} </label>
+                        <input
+                        id={key}
+                        name = {key}
+                        type="text" 
+                        placeholder={'Enter the '+key}
+                        value = {data.more_details[key]}
+                        onChange={(e)=>{
+                          const value = e.target.value
+                          setData((prev)=>{
+                            return {
+                              ...prev,
+                              more_details:{
+                                ...prev.more_details,
+                                [key]:value
+                              }
+                            }
+                          })
+                        }}
+                        required
+                        className='bg-blue-50 p-2 outline-none border focus-within:border-primary-200 rounded '
+                        />
+                      </div>
+                    </form>
+                  </div>
+              )
+            })
+          }
+        </div>
+
+        <div onClick={()=>{setOpenAddField(true)}} className=' m-5 bg-primary-200 hover:bg-white py-2 px-2 w-32 text-center font-semibold border border-primary-200 rounded hover:text-neutral-900 cursor-pointer'>
           Add Field
         </div>
+
+        <button
+        onClick={handleSubmit}
+        className='bg-primary-200 hover:bg-white py-2 px-4 w-full text-center font-semibold border border-primary-200 rounded hover:text-neutral-900 cursor-pointer'
+        >
+          Submit
+        </button>
 
         {
           selectedImageUrl && (
             <ViewImage url={selectedImageUrl} close={()=>setSelectedImageUrl("")}/>
           )
         }
+
+        {
+          openAddField &&(
+            <AddField 
+            close={()=>{
+              setOpenAddField(false)
+            }}
+            value={fieldName}
+            onChange={(e)=>{
+              setFieldName(e.target.value)
+            }}
+            submit={handleAddField}
+            />
+          )
+        }
+
     </section>
   )
 }
