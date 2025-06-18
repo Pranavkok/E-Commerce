@@ -3,7 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    @apply bg-slate-50 font-['Poppins'] font-thin not-italic bg-blue-50 text-neutral-700
+html{
+    scroll-behavior: smooth;
+}
 
+body {
+
+    @apply bg-slate-50 font-['Poppins'] font-thin not-italic bg-blue-50 text-neutral-700 scroll-smooth
+
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
 }

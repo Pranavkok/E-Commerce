@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 const initialValue = {
     allCategory: [],
+    loadingCategory : false,
     allSubCategory: [],
     product : [],
 }
@@ -14,6 +15,9 @@ const productSlice = createSlice({
             console.log("All category data: ", action.payload)
             state.allCategory = [...action.payload];
         },
+        setloadingCategory: (state, action) => {
+            state.loadingCategory = action.payload;
+        },
         setAllSubCategory: (state, action) => {
             state.allSubCategory = [...action.payload];
         },
@@ -24,6 +28,6 @@ const productSlice = createSlice({
 })
 
 
-export const {setAllCategory, setAllSubCategory, setProduct} = productSlice.actions;
+export const {setAllCategory,setloadingCategory, setAllSubCategory, setProduct} = productSlice.actions;
 
 export default productSlice.reducer;

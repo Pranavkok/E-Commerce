@@ -86,3 +86,36 @@ export const getProduct = async(req,res)=>{
         });
     }
 }
+
+export const getProductByCategory = async(req,res)=>{
+    try {
+        const { id } = req.body;
+
+        if(!id){
+            return res.status(400).json({
+                message: "Category ID is required",
+                success: false,
+                error: true
+            });
+        }
+
+        const product = await ProductModel.find({
+            category: { $in: [id] }
+        }).sort({ createdAt: -1 }).limit(15);
+
+        return res.status(200).json({
+            message: "Products fetched successfully",
+            success: true,
+            error: false,
+            data: product
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error",
+            error: error.message,
+            success: false,
+            error: true
+        });
+    }
+}
