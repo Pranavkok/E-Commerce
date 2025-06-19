@@ -119,3 +119,75 @@ export const getProductByCategory = async(req,res)=>{
         });
     }
 }
+
+export const getProductByCategoryAndSubCategory = async(req,res)=>{
+    try {
+        const { categoryId, subCategoryId ,page ,limit} = req.body;
+        if(!categoryId || !subCategoryId){
+            return res.status(400).json({
+                message: "Category ID and SubCategory ID are required",
+                success: false,
+                error: true
+            });
+        }
+        if(!page){
+            page = 1
+        }
+        if(!limit){
+            limit = 10 
+        }
+
+        const query = {
+            category: { $in: categoryId },
+            subCategory: { $in: subCategoryId }
+        };
+
+        const [data,dataCount] = await Promise.all([
+            ProductModel.find(query)
+                .sort({ createdAt: -1 })
+                .skip((page - 1) * limit)
+                .limit(limit),
+        ])
+
+        return res.status(200).json({
+            message: "Products fetched successfully",
+            success: true,
+            error: false,
+            totalCount: dataCount,
+            totalNoPages: Math.ceil(dataCount/limit),
+            data: data,
+            page: page,
+            limit: limit
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error",
+            error: error.message,
+            success: false,
+            error: true
+        });
+    }
+}
+
+export const getProductById = async(req,res)=>{
+    try {
+        const { productId } = req.body;
+
+        const data = await ProductModel.findById(productId);
+
+        return res.status(200).json({
+            message: "Product fetched successfully",
+            success: true,
+            error: false,
+            data: data
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error",
+            error: error.message,
+            success: false,
+            error: true
+        });
+    }
+}
