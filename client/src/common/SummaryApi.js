@@ -1,5 +1,7 @@
 // import { getProduct } from "../../../server/controllers/product.controller";
 
+// import { updateProduct } from "../../../server/controllers/product.controller";
+
 export const baseURL = "http://localhost:8080"
 
 const SummaryApi = {
@@ -99,6 +101,14 @@ const SummaryApi = {
         url : "/api/product/get-product-by-id",
         method : "post"
     },
+    updateProduct : {
+        url : "/api/product/update-product",
+        method : "put"
+    },
+    deleteProduct : {
+        url : "/api/product/delete-product",
+        method : "delete"
+    }
 }
 
 export default SummaryApi ;

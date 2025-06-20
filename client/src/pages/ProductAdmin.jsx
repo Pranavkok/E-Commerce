@@ -5,6 +5,7 @@ import SummaryApi from '../common/SummaryApi';
 import Loading from '../components/Loading';
 import ProductCardAdmin from '../components/ProductCardAdmin';
 import { IoSearch } from "react-icons/io5";
+import EditProductAdmin from '../components/EditProductAdmin';
 
 const ProductAdmin =() => {
       const [productData, setProductData] = useState([]);
@@ -101,7 +102,7 @@ const ProductAdmin =() => {
             {
                 productData.map((p)=>{
                     return (
-                        <ProductCardAdmin key={p._id} data={p}/>
+                        <ProductCardAdmin  fetchProductData={ fetchProductData } key={p._id} data={p}/>
                     )
                 })
             }

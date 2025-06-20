@@ -4,7 +4,7 @@ export const createProduct = async(req,res)=>{
     try {
         const { name, image, category, subCategory, unit, stock, price, discount, description, more_details } = req.body;
 
-        if( !name || !category[0] || !subCategory[0] || !unit || !price || !description) {
+        if( !name || !category[0] || !subCategory[0] || !unit || !price || stock === undefined || stock === null || !description) {
             return res.status(400).json({
                 message: "Missing required fields"
             });
@@ -65,7 +65,8 @@ export const getProduct = async(req,res)=>{
             ProductModel.find(query)
                 .sort({ createdAt: -1 })
                 .skip(skip)
-                .limit(limit),
+                .limit(limit)
+                .populate('category subCategory'),
             ProductModel.countDocuments(query)
         ])
 
@@ -189,5 +190,68 @@ export const getProductById = async(req,res)=>{
             success: false,
             error: true
         });
+    }
+}
+
+export const updateProduct = async(req,res)=>{
+    try {
+        const {_id} = req.body;
+
+        if(!_id){
+            return res.status(400).json({
+                message: "Product ID is required",
+                success: false,
+                error: true
+            });
+        }
+
+        const updateProduct = await ProductModel.updateOne({_id:_id},{
+            ...req.body
+        })
+
+        return res.status(200).json({
+            message: "Product updated successfully",
+            success: true,
+            error: false,
+            data: updateProduct
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error",
+            error: error.message,
+            success: false,
+            error: true
+        });
+    }
+}
+
+export const deleteProduct =async(req,res)=>{
+    try {
+        const {_id} = req.body
+
+        if(!_id){
+            return res.status(400).json({
+                message :"Provide Product Id" ,
+                success : false ,
+                error : true 
+            })
+        }
+
+        const deleteProduct = await ProductModel.deleteOne({_id : _id})
+
+        return res.status(200).json({
+            message : "Product Deleted Successfully",
+            success : true ,
+            error : false ,
+            data: deleteProduct
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message :" Internal Server Error" ,
+            success : false ,
+            error : true 
+        })
     }
 }
