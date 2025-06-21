@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { GoTriangleDown ,GoTriangleUp} from "react-icons/go";
 import UserMenu from './userMenu';
 
+
 const Header = () => {
   const [isMobile] = useMobile()
   const location = useLocation()
@@ -17,7 +18,8 @@ const Header = () => {
   const navigate = useNavigate()
   const user = useSelector((state)=>state?.user)
   const [openUserMenu,setOpenUserMenu] = useState(false)
-
+  // const params = useLocation()
+  // const searchText = params.search.slice(3)
   // console.log('user :',user)
 
   const redirectToLogin = ()=>{

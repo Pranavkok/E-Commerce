@@ -148,6 +148,7 @@ export const getProductByCategoryAndSubCategory = async(req,res)=>{
                 .sort({ createdAt: -1 })
                 .skip((page - 1) * limit)
                 .limit(limit),
+            ProductModel.countDocuments(query)
         ])
 
         return res.status(200).json({
@@ -226,7 +227,7 @@ export const updateProduct = async(req,res)=>{
     }
 }
 
-export const deleteProduct =async(req,res)=>{
+export const deleteProduct = async(req,res)=>{
     try {
         const {_id} = req.body
 
@@ -248,6 +249,54 @@ export const deleteProduct =async(req,res)=>{
         })
 
     } catch (error) {
+        return res.status(500).json({
+            message :" Internal Server Error" ,
+            success : false ,
+            error : true 
+        })
+    }
+}
+
+export const searchProduct = async(req,res)=>{
+    try {
+        let {search,page,limit} = req.body 
+
+        if(!page){
+            page = 1
+        }
+        if(!limit){
+            limit = 10
+        }
+
+        console.log("i am goat 1")
+
+        const query = search ? {
+            $or: [
+                { name: { $regex: search, $options: 'i' } },
+                { description: { $regex: search, $options: 'i' } }
+            ]
+        } : {}
+
+        const skip = (page -1) * limit
+
+        const [data,dataCount] = await Promise.all([
+            ProductModel.find(query).sort({createdAt : -1}).skip(skip).limit(limit),
+            ProductModel.countDocuments(query)
+        ])
+        console.log("i am goat 2")
+        return res.status(200).json({
+            message :"Searched Product Successfully" ,
+            data : data ,
+            totalCount : dataCount,
+            totalPage : Math.ceil(dataCount/limit),
+            page : page ,
+            limit : limit,
+            success : true  ,
+            error : false
+        })
+
+    } catch (error) {
+        console.log("i am goat 9")
         return res.status(500).json({
             message :" Internal Server Error" ,
             success : false ,
