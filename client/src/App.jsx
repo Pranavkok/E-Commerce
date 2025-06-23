@@ -10,6 +10,8 @@ import { useDispatch } from 'react-redux';
 import { setAllCategory , setAllSubCategory ,setloadingCategory } from './store/productSlice';
 import SummaryApi from './common/SummaryApi';
 import Axios from './utils/Axios';
+// import { handleAddItemCart } from './store/cartProduct'
+import GlobalProvider from './provider/GlobalProvider';
 
 function App() {
   const dispatch = useDispatch()
@@ -66,14 +68,14 @@ function App() {
   },[])
 
   return (
-    <>
+    <GlobalProvider>
       <Header/>
       <main className='min-h-[78vh]'>
         <Outlet/>
       </main>
       <Footer/>
       <Toaster/>
-    </>
+    </GlobalProvider>
   )
 }
 

@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { GoTriangleDown ,GoTriangleUp} from "react-icons/go";
 import UserMenu from './userMenu';
+import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees';
 
 
 const Header = () => {
@@ -21,6 +22,7 @@ const Header = () => {
   // const params = useLocation()
   // const searchText = params.search.slice(3)
   // console.log('user :',user)
+  const cartItem = useSelector(state => state.cartItem.cart)
 
   const redirectToLogin = ()=>{
       navigate("/login")
@@ -98,9 +100,19 @@ const Header = () => {
                       <div className='animate-bounce'>
                           <FaShoppingCart size={26} />
                       </div>
-                      <div className='font-semibold'>
-                          <p>My Cart </p>
-                      </div>
+
+                      <div className='font-semibold text-sm'>
+                                                {
+                                                    cartItem[0] ? (
+                                                        <div>
+                                                            <p>{totalQty} Items</p>
+                                                            <p>{DisplayPriceInRupees(totalPrice)}</p>
+                                                        </div>
+                                                    ) : (
+                                                        <p>My Cart</p>
+                                                    )
+                                                }
+                      </div> 
                     </button>
                   </div>
                 </div>
