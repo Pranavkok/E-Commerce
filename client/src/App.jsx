@@ -12,6 +12,8 @@ import SummaryApi from './common/SummaryApi';
 import Axios from './utils/Axios';
 // import { handleAddItemCart } from './store/cartProduct'
 import GlobalProvider from './provider/GlobalProvider';
+import { FaCartShopping } from "react-icons/fa6";
+import CartMobileLink from './components/cartMobile';
 
 function App() {
   const dispatch = useDispatch()
@@ -75,6 +77,7 @@ function App() {
       </main>
       <Footer/>
       <Toaster/>
+      <CartMobileLink/>
     </GlobalProvider>
   )
 }

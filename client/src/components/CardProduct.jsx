@@ -3,6 +3,7 @@ import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees'
 import { Link } from 'react-router-dom'
 import { valideURLConvert } from '../utils/ValidateUrl'
 import { pricewithDiscount } from '../utils/PriceWithDiscount'
+import AddToCartButton from './AddToCartButton'
 // import SummaryApi from '../common/SummaryApi'
 // import AxiosToastError from '../utils/AxiosToastError'
 // import Axios from '../utils/Axios'
@@ -51,17 +52,17 @@ const CardProduct = ({data}) => {
           
           
         </div>
-        {/* <div className=''>
+        <div className=''>
           {
             data.stock == 0 ? (
               <p className='text-red-500 text-sm text-center'>Out of stock</p>
             ) : (
                 
-            //   <AddToCartButton data={data} />
+              <AddToCartButton data={data} />
             )
           }
             
-        </div> */}
+        </div>
       </div>
 
     </Link>

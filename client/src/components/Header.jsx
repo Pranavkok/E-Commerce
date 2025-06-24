@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { GoTriangleDown ,GoTriangleUp} from "react-icons/go";
 import UserMenu from './userMenu';
 import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees';
+import { useGlobalContext } from '../provider/GlobalProvider';
 
 
 const Header = () => {
@@ -23,6 +24,9 @@ const Header = () => {
   // const searchText = params.search.slice(3)
   // console.log('user :',user)
   const cartItem = useSelector(state => state.cartItem.cart)
+  const { totalPrice, totalQty} = useGlobalContext()
+    // const [openCartSection,setOpenCartSection] = useState(false)
+  
 
   const redirectToLogin = ()=>{
       navigate("/login")
