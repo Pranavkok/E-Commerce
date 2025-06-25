@@ -11,6 +11,7 @@ import { GoTriangleDown ,GoTriangleUp} from "react-icons/go";
 import UserMenu from './userMenu';
 import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees';
 import { useGlobalContext } from '../provider/GlobalProvider';
+import DisplayCartItem from './DisplayCartItem';
 
 
 const Header = () => {
@@ -25,7 +26,7 @@ const Header = () => {
   // console.log('user :',user)
   const cartItem = useSelector(state => state.cartItem.cart)
   const { totalPrice, totalQty} = useGlobalContext()
-    // const [openCartSection,setOpenCartSection] = useState(false)
+    const [openCartSection,setOpenCartSection] = useState(false)
   
 
   const redirectToLogin = ()=>{
@@ -99,7 +100,7 @@ const Header = () => {
                         <button onClick={redirectToLogin} className='text-lg px-2'>Login</button>
                       )
                     }
-                    <button className='flex items-center gap-3 bg-secondary-200 hover:bg-green-700 px-3 py-3 rounded text-white'>
+                    <button onClick={()=>{setOpenCartSection(true)}} className='flex items-center gap-3 bg-secondary-200 hover:bg-green-700 px-3 py-3 rounded text-white'>
                       {/* add to cart icon */}
                       <div className='animate-bounce'>
                           <FaShoppingCart size={26} />
@@ -126,6 +127,13 @@ const Header = () => {
         <div className='container mx-auto px-2 lg:hidden'>
           <Search/>
         </div>
+
+            {
+              openCartSection && (
+                <DisplayCartItem close={()=>setOpenCartSection(false)}/>
+              )
+            }
+
       </header>
   )
 }

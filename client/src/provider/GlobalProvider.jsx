@@ -49,12 +49,14 @@ const GlobalProvider = ({children})=>{
         const {data : responseData} = response 
 
         if(responseData.success){
-          toast.success("Product added")
+          // toast.success("Product added")
           fetchCartItem()
+          return responseData
         }
       }
       catch (error) {
         toast.error("Failed to increase the Quantity")
+        return error
       }
     }
 
@@ -107,7 +109,8 @@ const GlobalProvider = ({children})=>{
             updateCartItem,
             deleteCartItem,
             totalPrice,
-            totalQty
+            totalQty,
+            notDiscountTotalPrice
           }
         }>
             {children}
