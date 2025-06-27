@@ -98,9 +98,19 @@ const GlobalProvider = ({children})=>{
       setNotDiscountTotalPrice(notDiscountPrice)
   },[cartItem])
 
+    // useEffect(()=>{
+    //     fetchCartItem()
+    // },[])
+
+    const handleLogout = ()=>{
+      localStorage.clear()
+      dispatch(handleAddItemCart([]))
+    }
+
     useEffect(()=>{
-        fetchCartItem()
-    },[])
+      fetchCartItem()
+      handleLogout()
+    },[user])
 
     return (
         <GlobalContext.Provider value={
