@@ -38,3 +38,24 @@ export const addAddressController = async(req,res)=>{
         })
     }
 }
+
+export const getAddressController = async(request,response)=>{
+    try {
+        const userId = request.userId 
+
+        const data = await AddressModel.find({ userId : userId }).sort({ createdAt : -1})
+
+        return response.json({
+            data : data,
+            message : "List of address",
+            error : false,
+            success : true
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message : error.message || error ,
+            error : true,
+            success : false
+        })
+    }
+}

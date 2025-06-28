@@ -132,6 +132,10 @@ const SummaryApi = {
     createAddress : {
         url : "/api/address/create-address",
         method : "post"
+    },
+    getAddress : {
+        url : "/api/address/get-address",
+        method : "get"
     }
 }
 
