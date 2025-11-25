@@ -12,8 +12,8 @@ const auth = async(req,res,next)=>{
         if (!token) {
             return res.status(401).json({
                 message: "Please provide authentication token",
-                // error: true,
-                // success: false
+                error: true,
+                success: false
             });
         }
 

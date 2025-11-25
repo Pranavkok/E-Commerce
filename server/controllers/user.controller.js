@@ -142,13 +142,9 @@ export async function loginController(req,res){
         const accessToken = await generatedAccessToken(user._id)
         const refreshToken = await generatedRefreshToken(user._id)
 
-        const updateUser = await UserModel.findByIdAndUpdate(user?._id,{
-            last_login_date : new Date()
-        })
-
         const cookiesOption = {
             httpOnly : true ,
-            secure :true,
+            secure : process.env.NODE_ENV === "production" ? true : false,
             samesite : "None"
         }
 
@@ -180,7 +176,7 @@ export async function logoutController(req,res){
         const userid = req.userId
         const cookiesOption = {
             httpOnly : true ,
-            secure :true,
+            secure : process.env.NODE_ENV === "production" ? true : false,
             samesite : "None"
         }
         res.clearCookie("accessToken",cookiesOption);

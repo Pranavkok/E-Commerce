@@ -44,8 +44,6 @@ const Login = () => {
             }
             if(response.data.success){
                 toast.success(response.data.message)
-                localStorage.setItem("accessToken",response.data.data.accesstoken)
-                localStorage.setItem("refreshToken",response.data.data.refreshToken)
                 const userDetails = await fetchUserDetails()
                 dispatch(setUserDetail(userDetails.data))
                 setData({

@@ -8,10 +8,6 @@ const Axios = axios.create({
 
 Axios.interceptors.request.use(
     async(config)=>{
-        const accessToken = localStorage.getItem('accesstoken')
-        if(accessToken){
-            config.headers.authorization = `Bearer ${accessToken}`
-        }
         return config
     },
     (error)=>{
@@ -20,41 +16,13 @@ Axios.interceptors.request.use(
 )
 Axios.interceptors.response.use(
     (response) => {
-        return response; // Return the response as is
+        return response;
     },
-    async (error) => {  // Handle errors (like expired tokens)
-        let originRequest = error.config;
-
-        if (error.response && error.response.status === 401 && !originRequest.retry) {
-            originRequest.retry = true;
-
-            const refreshToken = localStorage.getItem('refreshToken');
-
-            if (refreshToken) {
-                const newAccessToken = await refreshaccesstoken(refreshToken);
-                if (newAccessToken) {
-                    originRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-                    return Axios(originRequest);  // Retry request with new token
-                }
-            }
-        }
-
+    async (error) => {
         return Promise.reject(error);
     }
 );
 
-const refreshaccesstoken = async(refreshToken)=>{
-    try {
-        const response = await Axios({
-            ...SummaryApi.refresh_token,
-            headers : {
-                Authorization: `Bearer ${refreshToken}`
-            }
-        })
-        console.log("refreshed AccessToken Response -> ",response)
-    } catch (error) {
-        console.log(error);
-    }
-}
+
 
 export default Axios 
